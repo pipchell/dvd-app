@@ -1,4 +1,4 @@
-name: Build RPC DVD App
+name: Build RPClogo DVD App
 
 on:
   push:
@@ -19,11 +19,18 @@ jobs:
     - name: Install Nativefier
       run: npm install -g nativefier
 
-    - name: Build Windows App
-      run: nativefier --name "RPC DVD" "https://dvd.rpcgroup.xyz" build-output/
+    - name: Build Windows App in Fullscreen with Icon
+      run: |
+        mkdir build-output
+        nativefier "https://dvd.rpcgroup.xyz" \
+          --name "RPClogo DVD" \
+          --icon logo.png \
+          --fullscreen \
+          --disable-dev-tools \
+          --out build-output
 
-    - name: Upload EXE as artifact
+    - name: Upload .exe as GitHub Artifact
       uses: actions/upload-artifact@v3
       with:
-        name: rpc-dvd-exe
+        name: RPClogo-DVD-Windows
         path: build-output/
