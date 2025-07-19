@@ -1,40 +1,41 @@
-name: Build DVD App
+name: Build Nativefier App
 
 on:
   push:
     branches:
       - main
+  workflow_dispatch:
 
 jobs:
   build:
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
 
     steps:
     - name: Checkout repo
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
 
-    - name: Install Node.js
+    - name: Setup Node.js
       uses: actions/setup-node@v3
       with:
         node-version: 18
 
-    - name: Install Nativefier
-      run: npm install -g nativefier
+    - name: Install Nativefier globally
+      run: npm install -g nativefier@52.0.0
 
-    - name: Build Windows Nativefier app with icon and fullscreen
+    - name: Build Nativefier app
       run: |
         nativefier "https://dvd.rpcgroup.xyz" \
           --name "RPClogo DVD" \
+          --fullscreen \
           --disable-dev-tools \
-          --platform win32 \
-          --arch x64 \
-          --icon logo.png \
-          --full-screen \
-          --hide-window-frame \
+          --icon ./logo.png \
           --overwrite
 
+    - name: List output directory
+      run: ls -l
+
     - name: Upload built app artifact
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: RPClogoDVD-win32-x64
         path: RPClogo\ DVD-win32-x64/
