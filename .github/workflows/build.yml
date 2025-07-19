@@ -1,4 +1,4 @@
-name: Build Nativefier Windows App
+name: Build Nativefier App
 
 on:
   push:
@@ -6,12 +6,11 @@ on:
       - main
 
 jobs:
-  build:
+  build-win:
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v3
-
+      
       - name: Install Node.js
         uses: actions/setup-node@v3
         with:
@@ -20,12 +19,12 @@ jobs:
       - name: Install Nativefier globally
         run: npm install -g nativefier
 
-      - name: Build Windows Nativefier app
+      - name: Build Windows Nativefier app with icon
         run: |
-          nativefier "https://dvd.rpcgroup.xyz" --name "RPClogo DVD" --fullscreen --disable-dev-tools --platform win32
+          nativefier "https://dvd.rpcgroup.xyz" --name "RPClogo DVD" --fullscreen --disable-dev-tools --platform win32 --icon logo.png
 
       - name: Upload Windows build artifact
         uses: actions/upload-artifact@v4
         with:
-          name: nativefier-windows-app
-          path: ./RPClogo\ DVD-win32-x64/
+          name: RPClogoDVD-win32-x64
+          path: RPClogo\ DVD-win32-x64/
