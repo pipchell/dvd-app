@@ -11,31 +11,30 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout repo
-      uses: actions/checkout@v4
+      - name: Checkout repo
+        uses: actions/checkout@v4
 
-    - name: Setup Node.js
-      uses: actions/setup-node@v3
-      with:
-        node-version: 18
+      - name: Install Nativefier
+        run: npm install -g nativefier@52.0.0
 
-    - name: Install Nativefier globally
-      run: npm install -g nativefier@52.0.0
+      - name: Build Nativefier app
+        run: |
+          nativefier "https://dvd.rpcgroup.xyz" \
+            --name "RPClogo DVD" \
+            --arch x64 \
+            --platform win32 \
+            --overwrite \
+            --icon ./RPClogo.ico \
+            --fullscreen
 
-    - name: Build Nativefier app
-      run: |
-        nativefier "https://dvd.rpcgroup.xyz" \
-          --name "RPClogo DVD" \
-          --fullscreen \
-          --disable-dev-tools \
-          --icon ./logo.png \
-          --overwrite
+      - name: List files in workspace
+        run: ls -l
 
-    - name: List output directory
-      run: ls -l
+      - name: List app folder contents
+        run: ls -l "RPClogo DVD-win32-x64"
 
-    - name: Upload built app artifact
-      uses: actions/upload-artifact@v4
-      with:
-        name: RPClogoDVD-win32-x64
-        path: RPClogo\ DVD-win32-x64/
+      - name: Upload built app artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: RPClogoDVD-win32-x64
+          path: "RPClogo DVD-win32-x64/"
