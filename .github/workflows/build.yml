@@ -19,19 +19,20 @@ jobs:
       - name: Install Nativefier
         run: npm install -g nativefier
 
-      - name: Build Windows App without icon
+      - name: Build Windows App with debug logs
         run: |
-          mkdir build-output
           nativefier "https://dvd.rpcgroup.xyz" \
             --name "RPClogo DVD" \
             --fullscreen \
             --disable-dev-tools \
-            --out ./build-output
-          echo "Contents of build-output:"
-          ls -la ./build-output
-
+            --verbose
+          echo "Listing current directory contents:"
+          ls -la
+          echo "Listing contents of nativefier build folder:"
+          ls -la "RPClogo DVD-win32-x64" || echo "Build folder not found"
+          
       - name: Upload EXE artifact
         uses: actions/upload-artifact@v4
         with:
           name: RPClogo-DVD-Windows
-          path: ./build-output/
+          path: "RPClogo DVD-win32-x64/"
