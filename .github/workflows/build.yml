@@ -8,29 +8,31 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-    - name: Set up Node.js
-      uses: actions/setup-node@v3
-      with:
-        node-version: 18
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
 
-    - name: Install Nativefier
-      run: npm install -g nativefier
+      - name: Install Nativefier
+        run: npm install -g nativefier
 
-    - name: Build Windows App in Fullscreen with Icon
-      run: |
-        mkdir build-output
-        nativefier "https://dvd.rpcgroup.xyz" \
-          --name "RPClogo DVD" \
-          --icon logo.png \
-          --fullscreen \
-          --disable-dev-tools \
-          --out build-output
+      - name: Build Windows App
+        run: |
+          mkdir build-output
+          nativefier "https://dvd.rpcgroup.xyz" \
+            --name "RPClogo DVD" \
+            --icon ./logo.png \
+            --fullscreen \
+            --disable-dev-tools \
+            --out ./build-output
+          echo "Contents of build-output:"
+          ls -la ./build-output
 
-    - name: Upload .exe as GitHub Artifact
-      uses: actions/upload-artifact@v4
-      with:
-        name: RPClogo-DVD-Windows
-        path: build-output/
+      - name: Upload EXE
+        uses: actions/upload-artifact@v4
+        with:
+          name: RPClogo-DVD-Windows
+          path: ./build-output/
