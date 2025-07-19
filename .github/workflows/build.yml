@@ -1,46 +1,18 @@
-name: Build Nativefier App
-
-on:
-  push:
-    branches:
-      - main
-  workflow_dispatch:
-
-jobs:
-  build:
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout repo
-        uses: actions/checkout@v3
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '18'
-
-      - name: Install Nativefier globally
-        run: npm install -g nativefier
-
-      - name: List workspace before build
-        run: ls -la
-
       - name: Build Nativefier app (verbose)
         run: nativefier --name "RPClogoDVD" --icon "./RPClogo.ico" --platform win32 --arch x64 --verbose "https://dvd.rpcgroup.xyz"
 
       - name: List workspace after build
         run: ls -la
 
+      - name: List all directories matching pattern
+        run: ls -ld *-win32-x64 || echo "No directories found matching *-win32-x64"
+
       - name: Find build output directory
         id: finddir
         run: |
           folder=$(ls -d *-win32-x64 2>/dev/null || echo "")
-          echo "folder=$folder"
+          echo "Found folder: $folder"
           echo "folder=$folder" >> $GITHUB_OUTPUT
-
-      - name: List build output directory contents
-        if: steps.finddir.outputs.folder != ''
-        run: ls -la "${{ steps.finddir.outputs.folder }}"
 
       - name: Upload build artifact
         if: steps.finddir.outputs.folder != ''
