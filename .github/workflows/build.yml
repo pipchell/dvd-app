@@ -36,7 +36,7 @@ jobs:
         run: |
           folder=$(ls -d *-win32-x64 2>/dev/null || echo "")
           echo "folder=$folder"
-          echo "::set-output name=folder::$folder"
+          echo "folder=$folder" >> $GITHUB_OUTPUT
 
       - name: List build output directory contents
         if: steps.finddir.outputs.folder != ''
