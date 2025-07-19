@@ -1,0 +1,29 @@
+name: Build RPC DVD App
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: 18
+
+    - name: Install Nativefier
+      run: npm install -g nativefier
+
+    - name: Build Windows App
+      run: nativefier --name "RPC DVD" "https://dvd.rpcgroup.xyz" build-output/
+
+    - name: Upload EXE as artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: rpc-dvd-exe
+        path: build-output/
